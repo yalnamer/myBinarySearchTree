@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "Tree.h"
 
 
@@ -15,6 +16,10 @@ int main()
 					<< "-:>> Tree Menu \n"
 					<< "   [1]. Insert \n"
 					<< "   [2]. Search \n"
+					<< "   [3]. Print elements: Breadth-First\n"
+					<< "   [4]. Print elements: Depth-First Preorder\n"
+					<< "   [5]. Print elements: Depth-First Inorder\n"
+					<< "   [6]. Print elements: Depth-First PostOrder\n "
 					<< "   [0]. Quit \n\n";
 
 		int choice;
@@ -47,6 +52,26 @@ int main()
 
 		}
 
+		if (choice == 3)
+		{
+			bst.printB();
+		}
+
+		if (choice == 4)
+		{
+			bst.printPreorder();
+		}
+
+		if (choice == 5)
+		{
+			bst.printInorder();
+		}
+
+		if (choice == 6)
+		{
+			bst.printPostorder();
+		}
+
 		if (choice == 0)
 		{
 			over = true;
@@ -56,15 +81,15 @@ int main()
 
 		if (bst.isEmpty())
 		{
-			std::cout << "  >>>|: Height: 0 \n"
-					  << "  >>>>>|: Max: Empty Tree \n"
-					  << "  >>>>>>>|: Min: Empty Tree \n\n";
+			std::cout << "  >>>| Height: 0 \n"
+					  << "  >>>>>| Max: Empty Tree \n"
+					  << "  >>>>>>>| Min: Empty Tree \n\n";
 		}
 		else
 		{
-			std::cout << "  >>>|: Height: " << bst.getHeight() <<"\n"
-					  << "  >>>>>|: Max: " << bst.max() << "\n"
-					  << "  >>>>>>>|: Min: " << bst.min() << "\n\n";
+			std::cout << "  >>>| Height: " << bst.getHeight() <<"\n"
+					  << "  >>>>>| Max: " << bst.max() << "\n"
+					  << "  >>>>>>>| Min: " << bst.min() << "\n\n";
 
 		}
 

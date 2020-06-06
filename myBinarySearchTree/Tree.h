@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <queue>
+
 #include "Node.h"
 
 
@@ -14,6 +16,9 @@ class Tree {
 	void insert(Node<T>** root, T x); //>Insert function used recursively
 	bool search(Node<T>* root, T x); //> Search a tree recursively
 	int getHeight(Node<T>* root);
+	void printPreorder(Node<T>* root);
+	void printInorder(Node<T>* root);
+	void printPostorder(Node<T>* root);
 
 public:
 
@@ -37,6 +42,18 @@ public:
 	int getHeight();
 
 	bool isEmpty();
+
+	//Prints tree data in bread first order
+	void printB();
+
+	//Print tree data in Predorder depth first order
+	void printPreorder();
+
+	//print tree data in inorder depth first order
+	void printInorder();
+
+	//print tree data in postorder depth first order
+	void printPostorder();
 
 };
 
@@ -207,6 +224,7 @@ inline int Tree<T>::getHeight(Node<T>* root)
 
 }
 
+
 template<typename T>
 inline bool Tree<T>::isEmpty()
 {
@@ -214,4 +232,126 @@ inline bool Tree<T>::isEmpty()
 		return true;
 	else
 		return false;
+}
+
+template<typename T>
+inline void Tree<T>::printB()
+{
+
+	if (root == nullptr)
+	{
+		std::cout << "Tree is empty\n";
+		return;
+	};
+
+	//Queue used to print nodes in correct order
+	std::queue<Node<T>*> traverse;
+	
+	traverse.push(root);
+
+	std::cout << "Queue print: ";
+
+	//Cycle through elements of queue
+	while (!traverse.empty())
+	{
+		Node<T>* current = traverse.front();
+
+		if (current->left != nullptr)
+			traverse.push(current->left);
+
+		if (current->right != nullptr)
+			traverse.push(current->right);
+
+		std::cout << current->data <<  " ";
+
+		traverse.pop();
+		 
+	}
+	std::cout << "\n";
+}
+
+template<typename T>
+inline void Tree<T>::printPreorder()
+{
+	if (root == nullptr)
+	{
+		std::cout << "Empty Tree";
+		return;
+	}
+	std::cout << "Depth-First Preorder: ";
+	printPreorder(root);
+	std::cout << "\n";
+}
+
+
+
+template<typename T>
+inline void Tree<T>::printPreorder(Node<T>* root)
+{
+	std::cout << root->data << " ";
+	
+	if (root->left != nullptr)
+		printPreorder(root->left);
+
+	if (root->right != nullptr)
+		printPreorder(root->right);
+
+}
+
+
+template<typename T>
+inline void Tree<T>::printInorder()
+{
+	if (root == nullptr)
+	{
+		std::cout << "Empty Tree";
+		return;
+	}
+	std::cout << "Depth-First Inorder: ";
+	printInorder(root);
+	std::cout << "\n";
+}
+
+
+template<typename T>
+inline void Tree<T>::printInorder(Node<T>* root)
+{
+	
+
+	if (root->left != nullptr)
+		printInorder(root->left);
+
+	std::cout << root->data << " ";
+
+	if (root->right != nullptr)
+		printInorder(root->right);
+
+}
+
+template<typename T>
+inline void Tree<T>::printPostorder()
+{
+	if (root == nullptr)
+	{
+		std::cout << "Empty Tree";
+		return;
+	}
+	std::cout << "Depth-First Postorder: ";
+	printPostorder(root);
+	std::cout << "\n";
+}
+
+
+
+template<typename T>
+inline void Tree<T>::printPostorder(Node<T>* root)
+{
+	if (root->left != nullptr)
+		printPostorder(root->left);
+
+
+	if (root->right != nullptr)
+		printPostorder(root->right);
+
+	std::cout << root->data << " ";
 }
