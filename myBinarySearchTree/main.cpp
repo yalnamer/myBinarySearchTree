@@ -19,7 +19,8 @@ int main()
 					<< "   [3]. Print elements: Breadth-First\n"
 					<< "   [4]. Print elements: Depth-First Preorder\n"
 					<< "   [5]. Print elements: Depth-First Inorder\n"
-					<< "   [6]. Print elements: Depth-First PostOrder\n "
+					<< "   [6]. Print elements: Depth-First PostOrder\n"
+					<< "   [7]. Delete Element\n"
 					<< "   [0]. Quit \n\n";
 
 		int choice;
@@ -45,7 +46,7 @@ int main()
 			std::cin >> num;
 
 			if (bst.search(num))
-				std::cout << "[!] Number found!\n";
+				std::cout << "[!] Number found!\n";	
 			else
 				std::cout << "[!] Not Found\n";
 
@@ -70,6 +71,15 @@ int main()
 		if (choice == 6)
 		{
 			bst.printPostorder();
+		}
+		if (choice == 7)
+		{
+			std::cout << "Enter a number to delete from tree: ";
+
+			int num;
+			std::cin >> num;
+
+			bst.remove(num);
 		}
 
 		if (choice == 0)
@@ -96,6 +106,7 @@ int main()
 			
 
 	}
+
 
 
 }

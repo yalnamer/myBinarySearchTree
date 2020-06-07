@@ -20,6 +20,12 @@ class Tree {
 	void printInorder(Node<T>* root);
 	void printPostorder(Node<T>* root);
 
+	Node<T>* findMin(Node<T>* root);
+
+	Node<T>* remove(Node<T>* root, T x);
+	
+
+
 public:
 
 	Tree();
@@ -119,7 +125,76 @@ inline void Tree<T>::insert(Node<T>** root, T x)
 template<typename T>
 inline void Tree<T>::remove(T x)
 {
+	
+	if (!search(x))
+	{
+		std::cout << "[!] ERROR: Data not found.\n";
+		return;
+	}
+
+	remove(root, x);
+
 }
+
+template<typename T>
+inline Node<T>* Tree<T>::remove(Node<T>* root, T x)
+{
+
+	if (root->data > x)
+	{
+		root->left = remove(root->left, x);
+	}
+	else if (root->data < x)
+	{
+		root->right = remove(root->right, x);
+	}
+	else if (root->data == x)
+	{
+
+		if ( (root->right == nullptr) && (root->left == nullptr) )
+		{
+			delete root;
+			root = nullptr;
+		}
+		else if (root->right == nullptr)
+		{
+			Node<T>* temp = root->left;
+			delete root;
+			return temp;
+		}
+		else if (root->left == nullptr)
+		{
+			Node<T>* temp = root->right;
+			delete root;
+			return temp;
+		}
+		else
+		{
+			Node<T>* min = findMin(root->right);
+			root->data = min->data;
+			root->right = remove(root->right, min->data);
+		}
+
+	}
+	return root;
+	 
+}
+
+template<typename T>
+inline Node<T>* Tree<T>::findMin(Node<T>* root)
+{
+	while (root->left != nullptr)
+	{
+		root = root->left;
+	}
+
+	return root;
+
+}
+
+
+
+
 
 template<typename T>
 inline bool Tree<T>::search(T x)
@@ -288,6 +363,8 @@ inline void Tree<T>::printPreorder()
 template<typename T>
 inline void Tree<T>::printPreorder(Node<T>* root)
 {
+
+	//Preorder: <data><left><right>
 	std::cout << root->data << " ";
 	
 	if (root->left != nullptr)
@@ -302,6 +379,7 @@ inline void Tree<T>::printPreorder(Node<T>* root)
 template<typename T>
 inline void Tree<T>::printInorder()
 {
+	//Inorder: <left><data><right>
 	if (root == nullptr)
 	{
 		std::cout << "Empty Tree";
@@ -317,7 +395,7 @@ template<typename T>
 inline void Tree<T>::printInorder(Node<T>* root)
 {
 	
-
+	//Postorder: <left><right><data>
 	if (root->left != nullptr)
 		printInorder(root->left);
 
@@ -342,7 +420,6 @@ inline void Tree<T>::printPostorder()
 }
 
 
-
 template<typename T>
 inline void Tree<T>::printPostorder(Node<T>* root)
 {
@@ -355,3 +432,5 @@ inline void Tree<T>::printPostorder(Node<T>* root)
 
 	std::cout << root->data << " ";
 }
+
+
