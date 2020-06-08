@@ -14,17 +14,24 @@ class Tree {
 
 	
 	void insert(Node<T>** root, T x); //>Insert function used recursively
+
 	bool search(Node<T>* root, T x); //> Search a tree recursively
-	int getHeight(Node<T>* root);
-	void printPreorder(Node<T>* root);
-	void printInorder(Node<T>* root);
-	void printPostorder(Node<T>* root);
 
-	Node<T>* findMin(Node<T>* root);
+	int getHeight(Node<T>* root); //> Return height of tree
 
-	Node<T>* remove(Node<T>* root, T x);
-	
+	void printPreorder(Node<T>* root); //>Print nodes in preorder order 
 
+	void printInorder(Node<T>* root); //> Print nodes in inorder form(sorted order in a bst)
+
+	void printPostorder(Node<T>* root); //> Print nodes in post order form
+
+	Node<T>* findMin(Node<T>* root); //> Find min value in a tree
+
+	Node<T>* remove(Node<T>* root, T x); //> Remove a node from tree
+
+	T findNext(Node<T>* root, T x); //> Find the next greater element in tree
+
+	Node<T>* find(Node<T>* root, T x); //> Find the node which holds x
 
 public:
 
@@ -60,6 +67,9 @@ public:
 
 	//print tree data in postorder depth first order
 	void printPostorder();
+
+	//Find next greater value
+	T findNext(T x);
 
 };
 
@@ -139,45 +149,116 @@ inline void Tree<T>::remove(T x)
 template<typename T>
 inline Node<T>* Tree<T>::remove(Node<T>* root, T x)
 {
-
+	//If data is less, then traverse left in the tree
 	if (root->data > x)
 	{
 		root->left = remove(root->left, x);
 	}
+	//If data is greater, then traverse right in the tree
 	else if (root->data < x)
 	{
 		root->right = remove(root->right, x);
 	}
+	//If data is found, we are in the right node
 	else if (root->data == x)
 	{
-
+		//Node has no children
 		if ( (root->right == nullptr) && (root->left == nullptr) )
 		{
 			delete root;
 			root = nullptr;
 		}
+		//Node has one child on the left
 		else if (root->right == nullptr)
 		{
 			Node<T>* temp = root->left;
 			delete root;
 			return temp;
 		}
+		//node has one child on the right
 		else if (root->left == nullptr)
 		{
 			Node<T>* temp = root->right;
 			delete root;
 			return temp;
 		}
+		//Node has two children
 		else
 		{
+			//Set the node being deleted to the smallest member of right subtree
 			Node<T>* min = findMin(root->right);
 			root->data = min->data;
+
+			//Delete the smallest member of the right tree now
 			root->right = remove(root->right, min->data);
 		}
 
 	}
 	return root;
 	 
+}
+
+template<typename T>
+inline T Tree<T>::findNext(T x)
+{
+	Node<T>* temp = find(root, x); //>Node to find next successor
+	return findNext(temp, x);
+}
+
+
+template<typename T>
+inline T Tree<T>::findNext(Node<T>* root, T x)
+{
+	//Case 1: root has a right tree, simply find smallest value in that tree and return
+	if (root->right != nullptr)
+	{
+		Node<T>* temp = findMin(root->right);
+		return temp->data;
+	}
+	//Case 2: Root doesn't have a right subtree, find the nearest possible ancestor, where this node could be place left of
+	else if (root->right == nullptr)
+	{
+		Node<T>* next = nullptr; //>Nearest ancestor
+		Node<T>* ancestor = this->root; //>current ancestor being explored
+		
+		//Traverse tree until the node whose successor is being looked for is hit.
+		while (ancestor != root)
+		{
+			//If ancestor is greater than root, that means root can be placed left of the ancestor. This is the nearest ancestor so far
+			if (root->data < ancestor->data) 
+			{
+				next = ancestor;
+				ancestor = ancestor->left;
+			}
+			else
+			{
+				ancestor = ancestor->right; //> Can not greater value than root so we move on
+			}
+		}
+
+		return next->data;
+	}
+}
+
+template<typename T>
+inline Node<T>* Tree<T>::find(Node<T>* root, T x)
+{
+
+	if (root == nullptr)
+		return nullptr;
+
+	if (root->data > x)
+	{
+		find(root->left,x);
+	}
+	else if (root->data < x)
+	{
+		find(root->right, x);
+	}
+	else
+	{
+		return root;
+	}
 }
 
 template<typename T>
@@ -418,6 +499,7 @@ inline void Tree<T>::printPostorder()
 	printPostorder(root);
 	std::cout << "\n";
 }
+
 
 
 template<typename T>

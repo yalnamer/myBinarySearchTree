@@ -21,6 +21,7 @@ int main()
 					<< "   [5]. Print elements: Depth-First Inorder\n"
 					<< "   [6]. Print elements: Depth-First PostOrder\n"
 					<< "   [7]. Delete Element\n"
+					<< "   [8]. Find next highest number in tree\n"
 					<< "   [0]. Quit \n\n";
 
 		int choice;
@@ -80,6 +81,16 @@ int main()
 			std::cin >> num;
 
 			bst.remove(num);
+		}
+
+		if (choice == 8)
+		{
+			std::cout << "Enter a number to find next highest in tree(must exist within the tree): ";
+
+			int num;
+			std::cin >> num;
+
+			std::cout << "Next Highest Number: " << bst.findNext(num) << std::endl;
 		}
 
 		if (choice == 0)
